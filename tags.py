@@ -104,15 +104,15 @@ class Tags(CTFAObjet):
 		print ("Coordonnées : " + t["latitude"] + " - " + t["longitude"])
 		
 	def afficheUn(self, t, w, l):
-		Label(w, text=t["url"]).grid(row=l, column=0, sticky=E)
-		Label(w, text=t["nom"]).grid(row=l, column=1, sticky=E)
-		Label(w, text=t["natureString"]).grid(row=l, column=2, sticky=E)
+		Label(w, text=t["drapeau"]).grid(row=l, column=0,  sticky=W, padx=2, pady=2)
+		Label(w, text=t["nom"]).grid(row=l, column=1,  sticky=W, padx=2, pady=2)
+		Label(w, text=t["natureString"]).grid(row=l, column=2,  sticky=W, padx=2, pady=2)
 		p = [self.getNom(x) for x in t["listeperes"]]
 		peres = (", ").join(p)
-		Label(w, text=peres[:34], width = 35).grid(row=l, column=3, sticky=E)
+		Label(w, text=peres[:34], width = 35).grid(row=l, column=3,  sticky=W, padx=2, pady=2)
 		f = [self.getNom(x) for x in t["listefils"]]
 		fils = (", ").join(f)
-		Label(w, text=fils[:34], width = 35).grid(row=l, column=4, sticky=E)
+		Label(w, text=fils[:34], width = 35).grid(row=l, column=4,  sticky=W, padx=2, pady=2)
 		
 	def get(self, t):
 		"""obtient un t (permet de passer indifferemment un num (en int ou en str) ou directement un tag (dictionnaire) """

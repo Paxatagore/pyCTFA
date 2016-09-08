@@ -1,4 +1,5 @@
 from tkinter import *
+import tkinter.font
 
 class CTFAObjet():
 	objetNom = ""
@@ -63,8 +64,9 @@ class CTFAObjet():
 		
 	def Legende(self, tke):
 		compteur = 0
+		fontLegende = tkinter.font.Font(weight="bold")
 		for t in self.legende:
-			Label(tke, text = t).grid(row=0, column=compteur)
+			Label(tke, text = t, font=fontLegende).grid(row=0, column=compteur, sticky=W, padx=2, pady=2)
 			compteur += 1
 			
 	def boutonsGaucheDroite(self, tke,de, a):

@@ -15,9 +15,9 @@ class Fonctions(CTFAObjet):
 		f["tag"] = self.tags.getById(f["lieuId"])["nom"]
 	
 	def afficheUn(self, t, w, l):
-		Label(w, text=t["nom"], bg='white').grid(row=l, column=0, sticky=E)
-		Label(w, text=t["occurence"], bg='white').grid(row=l, column=1, sticky=E)
-		Label(w, text=t["tag"], bg='white').grid(row=l, column=2, sticky=E)
+		Label(w, text=t["nom"], relief=GROOVE).grid(row=l, column=0, sticky=W, padx=2, pady=2)
+		Label(w, text=t["occurence"], relief=GROOVE).grid(row=l, column=1, sticky=W, padx=2, pady=2)
+		Label(w, text=t["tag"], relief=GROOVE).grid(row=l, column=2, sticky=W, padx=2, pady=2)
 		
 		
 		
