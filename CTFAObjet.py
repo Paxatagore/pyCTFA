@@ -35,12 +35,12 @@ class CTFAObjet():
 	
 	def trie(self):
 		"""tri les données par ordre alphabétique de nom"""
-		self.donnees.sort(key = lambda x:x["nom"])
+		self.donnees.sort(key = lambda x:x["nom"].lower())
 		pl = ""
 		self.listePL = []
 		for i, d in enumerate(self.donnees):
-			if (d["nom"][0] != pl):
-				pl = d["nom"][0]
+			if (d["nom"][0].lower() != pl.lower()):
+				pl = d["nom"][0].upper()
 				self.listePL.append((i, pl))
 		
 	def afficherTout(self, tke, de=0, a=15):
