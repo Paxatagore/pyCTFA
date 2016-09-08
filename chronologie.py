@@ -13,7 +13,7 @@ class MainApp(Tk):
 	def __init__(self, parent):
 		Tk.__init__(self, parent)
 		self.parent = parent
-		self.title = "PyChronologie"
+		self.title("PyChronologie")
 		self['bg'] = 'white'
 		self.menus()
 		self.espaceInstancie = 0
@@ -64,7 +64,8 @@ class MainApp(Tk):
 		
 if __name__ == "__main__":
 	app = MainApp(None)
-	h = GestionnaireHTTP()
+	
+	# h = GestionnaireHTTP()
 	# lesTags = Tags(h)
 	# lesFonctions = Fonctions(h, lesTags)
 	# lesLiensTT = liensTT(h, lesTags)
