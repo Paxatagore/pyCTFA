@@ -4,27 +4,21 @@ import pickle
 from getpass import getpass
 
 class GestionnaireHTTP():
+	"""gestionnaire de connexion au serveur"""
 	
 	def __init__(self):
-		self.opener = self.manager()
 		"""init"""
-		pass
-
+		self.opener = self.manager()
+		
 	def manager(self):
 		"""Créer un password manager"""
 		password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-
-		# Add the username and password.
-		# If we knew the realm, we could use it instead of None.
 		top_level_url = "www.steppe.fr"
 		login = input("Login : ")
 		pwd = getpass("Password : ")
 		password_mgr.add_password(None, top_level_url, login, pwd)
 		handler = urllib.request.HTTPBasicAuthHandler(password_mgr)
-
-		# create "opener" (OpenerDirector instance)
 		return urllib.request.build_opener(handler)
-		
 		
 	def envoieURL(self, url, data = "", method='POST'):
 		"""Envoie une URL et renvoie le résultat décodé"""
@@ -42,7 +36,7 @@ class GestionnaireHTTP():
 			return json.loads(r)
 
 
-#fonctions de formulaire
+#fonctions de formulaire (à écrire en mode Tkinter)
 
 class Form():
 	"""fonction de gestion d'un formulaire console"""
@@ -130,6 +124,7 @@ class Form():
 		return self.objet
 
 class fichierData():
+	"""gère le fichier de données (data.db), qui contient une sauvegarde locale des tags, liensTT, fonctions et dynasties"""
 
 	def __init__(self, mode=0):
 		"""ouvre le fichier de data en lecture ou écriture (mode 0/1)"""
@@ -151,4 +146,4 @@ class fichierData():
 		self.fichier.close()
 		
 if __name__ == '__main__':
-	http = GestionnaireHTTP()
+	#à écrire

@@ -1,13 +1,11 @@
 from CTFAObjet import CTFAObjet
 from tkinter import *
 
-
-
 class Tags(CTFAObjet):
 	"""la gestion des tags"""
 	objetNom = "tag"
 	
-	natures = ("Territoire", "Ville", "Régime", "Peuple", "Dynastie", "Musée", "Continent", "Etat", "Concepts", "Organisation", "Courant de pensée", "Mer", "Ile", "Astre", "Etat fédéré", "Ville et territoire")
+	natures = ("Territoire", "Ville", "Régime", "Peuple", "Dynastie", "Musée", "Continent", "Etat", "Concepts", "Organisation", "Courant de pensée", "Mer", "Ile", "Astre", "Etat fédéré", "Ville et territoire")	#nature de tags
 	legende = ("Drapeau", "Nom", "Nature", "Pères", "Fils")
 	
 	#les données sont stockées dans donnees, qui est une liste
@@ -15,6 +13,7 @@ class Tags(CTFAObjet):
 
 	#commandes de manipulation collective
 	def menu(self):
+		"""A EFFACER"""
 		print("Menu tags")
 		fc = (exit, self.cherche, self.ajoute, self.afficheParNature)
 		print("1 - Rechercher un tag")
@@ -26,6 +25,7 @@ class Tags(CTFAObjet):
 		fc[choix]()
 	
 	def cherche(self):
+		"""A EFFACER"""
 		"""chercher un tag"""
 		name = input("Entrez le nom du tag à rechercher : ")
 		for at in self.donnees:
@@ -47,9 +47,11 @@ class Tags(CTFAObjet):
 		return False
 		
 	def ajoute(self):
+		"""A EFFACER"""
 		self.form(0)
 		
 	def afficheParNature(self):
+		"""A EFFACER"""
 		print("Affichage des tags par nature")
 		lesChoix = [0]
 		for i, n in enumerate(self.natures):
@@ -63,26 +65,27 @@ class Tags(CTFAObjet):
 		
 	def corrigeUne(self, t):
 		"""corrige un tag"""
-		t["num"] = int(t["num"])
-		t["nature"] = int(t["nature"])
-		t["natureString"] = self.natures[t["nature"]]	#la nature
+		t["num"] = int(t["num"])		#le numéro est converti de chaine en entier
+		t["nature"] = int(t["nature"])	#idem pour nature
+		t["natureString"] = self.natures[t["nature"]]	#natureString est la valeur de chaîne de nature
 		
 		def tagSplit(v):
+			"""transforme une liste d'éléments contenus dans une chaîne séparés par une virgule en un tableau"""
 			if (v  == ""):
 				return []
 			else:
 				return v.split(",")
 								
-		#t["peres"] = tagSplitConvertit(t["peres"])
-		#t["fils"] = tagSplitConvertit(t["fils"])
 		t["motscles"] = tagSplit(t["motscles"])
 		t["adjectifs"] = tagSplit(t["adjectifs"])
+		#prépare deux tableaux vide pour recevoir les liensTT (pères / fils)
 		t["listefils"] = []
 		t["listeperes"] = []
 		
 					
 	def affiche(self, t):
-		"""affiche un tag"""
+		
+		"""A EFFACER"""
 		t = self.get(t)
 		if t == False:
 			return False
@@ -104,6 +107,7 @@ class Tags(CTFAObjet):
 		print ("Coordonnées : " + t["latitude"] + " - " + t["longitude"])
 		
 	def afficheUn(self, t, w, l):
+		"""affiche un tag"""
 		Label(w, text=t["drapeau"]).grid(row=l, column=0,  sticky=W, padx=2, pady=2)
 		Label(w, text=t["nom"]).grid(row=l, column=1,  sticky=W, padx=2, pady=2)
 		Label(w, text=t["natureString"]).grid(row=l, column=2,  sticky=W, padx=2, pady=2)
@@ -113,7 +117,9 @@ class Tags(CTFAObjet):
 		f = [self.getNom(x) for x in t["listefils"]]
 		fils = (", ").join(f)
 		Label(w, text=fils[:34], width = 35).grid(row=l, column=4,  sticky=W, padx=2, pady=2)
-		
+	
+	#gestion des données (à placer dans CTFAObjet ?)
+	
 	def get(self, t):
 		"""obtient un t (permet de passer indifferemment un num (en int ou en str) ou directement un tag (dictionnaire) """
 		if isinstance(t, str):
@@ -128,6 +134,7 @@ class Tags(CTFAObjet):
 			return t
 			
 	def getNom(self, t):
+		"""obtient le nom du tag t"""
 		t = self.get(t)
 		if t == False:
 			return ""
@@ -152,6 +159,7 @@ class Tags(CTFAObjet):
 	
 	def form(self, t = 0):
 		"""formulaire texte"""
+		"""à remplacer par la version tk"""
 		t = self.get(t)
 		if t == False:
 			t = {"num":0}
@@ -176,14 +184,8 @@ class Tags(CTFAObjet):
 			print("Le nouvel enregistrement a bien été ajouté (#", tm["num"],")")
 			return True
 	
-	# def Legende(self, widget):
-		# l1 = Label(widget, text="Drapeau")
-		# l1.grid(row=0, column=0)
-		# l2 = Label(widget, text="Nom")
-		# l2.grid(row=0, column=1)
-		
-		
 class liensTT(CTFAObjet):
+	"""liensTT"""
 	objetNom = "lientt"
 	
 	def __init__(self, h, mode, tags):
@@ -192,7 +194,7 @@ class liensTT(CTFAObjet):
 		
 	
 	def corrigeUne(self, lien):
-		#ajoute le lien dans les fils/père des tags
+		"""ajoute le lien dans les fils/père des tags"""
 		tp = self.tags.getById(lien["tag1"])
 		if tp:
 			tp["listefils"].append(lien["tag2"])
@@ -202,10 +204,5 @@ class liensTT(CTFAObjet):
 		
 	
 if __name__ == '__main__':
-	from connexion import *
-	import re
-	http = GestionnaireHTTP()
-	lesTags = Tags()
-	lesLiensTT = liensTT()
-	lesTags.menu()
+	#à écrire
 	

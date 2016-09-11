@@ -11,6 +11,7 @@ from tkinter import *
 class MainApp(Tk):
 	
 	def __init__(self, parent):
+		"""initialisation de l'application"""
 		#partie données
 		f = fichierData(1)
 		lesTags = Tags(f)
@@ -42,7 +43,10 @@ class MainApp(Tk):
 		f.ferme()
 		print("écriture des données...ok")
 	
+	#partie menus
+	
 	def menus(self):
+		"""instancie les menus"""
 		menu = Menu(self)
 		menu1 = Menu(menu, tearoff=0)
 		menu1.add_command(label="Tags", command = self.afficheTags)
@@ -56,7 +60,9 @@ class MainApp(Tk):
 		menu2.add_command(label="Dynasties", command = self.ajouteDynasties)
 		menu.add_cascade(label="Ajouter", menu=menu2)
 		self.config(menu=menu)
-		
+	
+	#commandes d'affichage
+	
 	def afficheTags(self):
 		self.creeEspace()
 		lesTags.afficherTout(self.espace)
@@ -68,7 +74,9 @@ class MainApp(Tk):
 	def afficheDynasties(self):
 		self.creeEspace()
 		lesDynasties.afficherTout(self.espace)
-		
+	
+	#commandes d'ajout
+	
 	def ajouteTags(self):
 		pass
 		
@@ -77,6 +85,8 @@ class MainApp(Tk):
 		
 	def ajouteDynasties(self):
 		pass
+	
+	#gestion de l'affichage
 	
 	def creeEspace(self):
 		"""crée un frame pour l'affichage "principal" """
