@@ -11,12 +11,36 @@ from tkinter import *
 class MainApp(Tk):
 	
 	def __init__(self, parent):
+		#partie données
+		f = fichierData(1)
+		lesTags = Tags(f)
+		lesFonctions = Fonctions(f, 'f', lesTags)
+		lesLiensTT = liensTT(f, 'f', lesTags)
+		lesDynasties = Dynasties(f)
+	
+		
+		#partie fenêtres
 		Tk.__init__(self, parent)
 		self.parent = parent
 		self.title("PyChronologie")
 		self['bg'] = 'white'
 		self.menus()
 		self.espaceInstancie = 0
+		
+	def rechargeDepuisServeur(self):
+		"""actualise les tags, liensTT, dynasties et fonction du serveur vers le fichier data"""
+		lesTags = Tags(h, 's')
+		lesFonctions = Fonctions(h, 's', lesTags)
+		lesLiensTT = liensTT(h, 's', lesTags)
+		lesDynasties = Dynasties(h, 's')
+		print( "Téléchargement des données... ok")
+		f = fichierData()
+		lesTags.ecritFichier(f)
+		lesFonctions.ecritFichier(f)
+		lesLiensTT.ecritFichier(f)
+		lesDynasties.ecritFichier(f)
+		f.ferme()
+		print("écriture des données...ok")
 	
 	def menus(self):
 		menu = Menu(self)
@@ -24,6 +48,7 @@ class MainApp(Tk):
 		menu1.add_command(label="Tags", command = self.afficheTags)
 		menu1.add_command(label="Fonctions", command = self.afficheFonctions)
 		menu1.add_command(label="Dynasties", command = self.afficheDynasties)
+		menu1.add_command(label="Actualiser", command=self.rechargeDepuisServeur)
 		menu.add_cascade(label="Afficher", menu=menu1)
 		menu2 = Menu(menu, tearoff=0)
 		menu2.add_command(label="Tags", command = self.ajouteTags)
@@ -63,25 +88,6 @@ class MainApp(Tk):
 	
 		
 if __name__ == "__main__":
+	h = GestionnaireHTTP()
 	app = MainApp(None)
-	
-	# h = GestionnaireHTTP()
-	# lesTags = Tags(h)
-	# lesFonctions = Fonctions(h, lesTags)
-	# lesLiensTT = liensTT(h, lesTags)
-	# lesDynasties = Dynasties(h)
-	
-	f = fichierData(1)
-	lesTags = Tags(f)
-	lesFonctions = Fonctions(f, lesTags)
-	lesLiensTT = liensTT(f, lesTags)
-	lesDynasties = Dynasties(f)
-	
-	# f = fichierData()
-	# lesTags.ecritFichier(f)
-	# lesFonctions.ecritFichier(f)
-	# lesLiensTT.ecritFichier(f)
-	# lesDynasties.ecritFichier(f)
-	# f.ferme()
-	
 	app.mainloop()

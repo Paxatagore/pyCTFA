@@ -6,9 +6,9 @@ class Fonctions(CTFAObjet):
 	objetNom = "fonction"
 	legende = ("Nom", "Occurences", "Tag associé")
 	
-	def __init__(self, h, tags):
+	def __init__(self, h, mode, tags):
 		self.tags = tags
-		CTFAObjet.__init__(self, h)
+		CTFAObjet.__init__(self, h, mode)
 	
 	def corrigeUne(self, f):
 		"""corrige une fonction"""

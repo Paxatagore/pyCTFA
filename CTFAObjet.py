@@ -9,19 +9,19 @@ class CTFAObjet():
 
 	def __init__(self, v, mode='f'):
 		if mode=='f':
+			#fichier
 			self.chargeFichier(v)
 		else:
+			#serveur
 			self.chargeServeur(v)
 		self.charge = 1
-		
-		
-		
+				
 	def chargeServeur(self, h):
 		self.h = h
 		d = self.h.envoieURL("REST/index.php?objet=" + self.objetNom)
 		self.donnees = d[self.objetNom]
 		self.nombre = len(self.donnees)
-		print("Chargement des " + str(self.nombre) + " " + self.objetNom + "s .... OK.")
+		print("Téléchargement des " + str(self.nombre) + " " + self.objetNom + "s .... OK.")
 		for t in self.donnees:
 			self.corrigeUne(t)		
 	

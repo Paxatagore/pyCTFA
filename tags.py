@@ -186,9 +186,9 @@ class Tags(CTFAObjet):
 class liensTT(CTFAObjet):
 	objetNom = "lientt"
 	
-	def __init__(self, h, tags):
+	def __init__(self, h, mode, tags):
 		self.tags = tags
-		CTFAObjet.__init__(self, h)
+		CTFAObjet.__init__(self, h, mode)
 		
 	
 	def corrigeUne(self, lien):
