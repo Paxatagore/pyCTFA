@@ -8,7 +8,7 @@ class GestionnaireHTTP():
 	
 	def __init__(self):
 		"""init"""
-		self.opener = self.manager()
+		self.opener = 0
 		
 	def manager(self):
 		"""Créer un password manager"""
@@ -21,6 +21,8 @@ class GestionnaireHTTP():
 		return urllib.request.build_opener(handler)
 		
 	def envoieURL(self, url, data = "", method='POST'):
+		if self.opener == 0:
+			self.opener = self.manager()
 		"""Envoie une URL et renvoie le résultat décodé"""
 		if data != "":
 			#mode POST
