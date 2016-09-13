@@ -126,22 +126,29 @@ class CTFAObjet():
 	def afficheFormulaire(self, o, master):
 		"""affiche le formulaire sur l'objet o"""
 		if (o["num"] == 0):
-			f = formulaire(o, "Ajouter un " + self.objetNom, master)
+			self.f = formulaire(o, "Ajouter un " + self.objetNom, self, master)
 		else:
-			f = formulaire(o, "Modifier un " + self.objetNom, master)
-		self.subform(o, f)
-		
+			self.f = formulaire(o, "Modifier un " + self.objetNom, self, master)
+		self.objetatraiter = o
+		self.subform()
+		self.f.bouton()
+	
+	def envoyerFormulaire(self):
+		"""récupération du formulaire"""
+		print("Récupération du formulaire")
+		self.subform2()
 		
 class formulaire(tkinter.Toplevel):
 	"""gestion d'un formulaire en tkinter"""
 	
-	def __init__(self, objet, titre, master=None):
+	def __init__(self, o, titre, objet, master=None):
+		self.o = o
 		self.objet = objet
 		tkinter.Toplevel.__init__(self, master)
 		fontLegende = tkinter.font.Font(weight="bold")
 		Label(self, text = titre, font=fontLegende).grid(row=0, column=0, columnspan=2, padx=2, pady=2)
 		Label(self, text="Num").grid(row=1, column=0,  sticky=W, padx=2, pady=2)
-		Label(self, text=objet["num"]).grid(row=1, column=1,  sticky=W, padx=2, pady=2)
+		Label(self, text=o["num"]).grid(row=1, column=1,  sticky=W, padx=2, pady=2)
 		self.compteur = 2
 	
 	def ajouteRubrique(self, rubrique):
@@ -151,12 +158,22 @@ class formulaire(tkinter.Toplevel):
 	def input(self, nom, champ):
 		Label(self, text=nom).grid(row=self.compteur, column=0,  sticky=W, padx=2, pady=2)
 		texte = tkinter.StringVar()
-		if not(champ in self.objet):
-			self.objet[champ] = ""
-		texte.set(self.objet[champ])
+		if not(champ in self.o):
+			self.o[champ] = ""
+		texte.set(self.o[champ])
 		Entry(self, textvariable=texte).grid(row=self.compteur, column=1,  sticky=W, padx=2, pady=2)
 		self.compteur += 1
 		return texte
+	
+	def bouton(self):
+		Button(self, text="Envoyer", command=self.objet.envoyerFormulaire).grid(row=self.compteur, column=0,  sticky=E, padx=2, pady=2)
+		Button(self, text="Annuler", command=self.quitter).grid(row=self.compteur, column=1,  sticky=E, padx=2, pady=2)
+		self.compteur += 1
+		return True
+	
+	def quitter(self):
+		"""termine le formulaire"""
+		self.quit()
 		
 		
 if __name__ == '__main__':

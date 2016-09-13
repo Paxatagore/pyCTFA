@@ -186,14 +186,21 @@ class Tags(CTFAObjet):
 			print("Le nouvel enregistrement a bien été ajouté (#", tm["num"],")")
 			return True
 	
-	def subform(self, o, w):
-		w.ajouteRubrique("Description")
-		fnom = w.input("Nom", "nom")
-		furl = w.input("URL", "url")
-		fdrapeau = w.input("Drapeau", "drapeau")
+	def subform(self):
+		self.f.ajouteRubrique("Description")
+		self.fnom = self.f.input("Nom", "nom")
+		self.furl = self.f.input("URL", "url")
+		self.fdrapeau = self.f.input("Drapeau", "drapeau")
 		
 	# f.ligne("Nature", f.selectTableauSimple("nature", CTFA.typeTags)) ;
 	
+	def subform2(self):
+		"""traitement du formulaire"""
+		#rappel : objet à traiter : self.objetatraiter
+		#formulaire : self.f
+		print("Le nom est désormais ", self.fnom.get())
+		print("L'url est désormais ", self.furl.get())
+		print("Le drapeau est désormais", self.fdrapeau.get())
 	
 class liensTT(CTFAObjet):
 	"""liensTT"""
