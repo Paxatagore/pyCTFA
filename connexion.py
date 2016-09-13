@@ -146,4 +146,4 @@ class fichierData():
 		self.fichier.close()
 		
 if __name__ == '__main__':
-	#à écrire
+	"""à écrire"""

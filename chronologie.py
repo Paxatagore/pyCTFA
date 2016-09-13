@@ -1,11 +1,7 @@
 #""" main.py """
-
-
 from connexion import *
 from CTFAObjet import *
-from fonctions import *
-from tags import *
-from dynasties import *
+from donnees import *
 from tkinter import *
 
 class MainApp(Tk):
@@ -14,10 +10,10 @@ class MainApp(Tk):
 		"""initialisation de l'application"""
 		#partie données
 		f = fichierData(1)
-		lesTags = Tags(f)
-		lesFonctions = Fonctions(f, 'f', lesTags)
-		lesLiensTT = liensTT(f, 'f', lesTags)
-		lesDynasties = Dynasties(f)
+		self.lesTags = Tags(f)
+		self.lesFonctions = Fonctions(f, 'f', self.lesTags)
+		self.lesLiensTT = liensTT(f, 'f', self.lesTags)
+		self.lesDynasties = Dynasties(f)
 	
 		
 		#partie fenêtres
@@ -30,16 +26,16 @@ class MainApp(Tk):
 		
 	def rechargeDepuisServeur(self):
 		"""actualise les tags, liensTT, dynasties et fonction du serveur vers le fichier data"""
-		lesTags = Tags(h, 's')
-		lesFonctions = Fonctions(h, 's', lesTags)
-		lesLiensTT = liensTT(h, 's', lesTags)
-		lesDynasties = Dynasties(h, 's')
+		self.lesTags = Tags(h, 's')
+		self.lesFonctions = Fonctions(h, 's', self.lesTags)
+		self.lesLiensTT = liensTT(h, 's', self.lesTags)
+		self.lesDynasties = Dynasties(h, 's')
 		print( "Téléchargement des données... ok")
 		f = fichierData()
-		lesTags.ecritFichier(f)
-		lesFonctions.ecritFichier(f)
-		lesLiensTT.ecritFichier(f)
-		lesDynasties.ecritFichier(f)
+		self.lesTags.ecritFichier(f)
+		self.lesFonctions.ecritFichier(f)
+		self.lesLiensTT.ecritFichier(f)
+		self.lesDynasties.ecritFichier(f)
 		f.ferme()
 		print("écriture des données...ok")
 	
@@ -65,20 +61,22 @@ class MainApp(Tk):
 	
 	def afficheTags(self):
 		self.creeEspace()
-		lesTags.afficherTout(self.espace)
+		self.lesTags.afficherTout(self.espace)
 		
 	def afficheFonctions(self):
 		self.creeEspace()
-		lesFonctions.afficherTout(self.espace)
+		self.lesFonctions.afficherTout(self.espace)
 		
 	def afficheDynasties(self):
 		self.creeEspace()
-		lesDynasties.afficherTout(self.espace)
+		self.lesDynasties.afficherTout(self.espace)
 	
 	#commandes d'ajout
 	
 	def ajouteTags(self):
-		pass
+		tagvide = {"num":0}
+		self.lesTags.afficheFormulaire(tagvide, self)
+		
 		
 	def ajouteFonctions(self):
 		pass

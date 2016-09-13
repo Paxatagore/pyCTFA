@@ -1,3 +1,5 @@
+"""gestion des données stables"""
+
 from CTFAObjet import CTFAObjet
 from tkinter import *
 
@@ -183,6 +185,15 @@ class Tags(CTFAObjet):
 			lesTags.donnees.append(tm["tag"])
 			print("Le nouvel enregistrement a bien été ajouté (#", tm["num"],")")
 			return True
+	
+	def subform(self, o, w):
+		w.ajouteRubrique("Description")
+		fnom = w.input("Nom", "nom")
+		furl = w.input("URL", "url")
+		fdrapeau = w.input("Drapeau", "drapeau")
+		
+	# f.ligne("Nature", f.selectTableauSimple("nature", CTFA.typeTags)) ;
+	
 	
 class liensTT(CTFAObjet):
 	"""liensTT"""

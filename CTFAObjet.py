@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.font
+from PIL import Image
 
 class CTFAObjet():
 	"""classe mère des objets qui pilotent des données"""
@@ -121,7 +122,42 @@ class CTFAObjet():
 	def ecritFichier(self, fichier):
 		"""sauvegarde les données dans le fichier f"""
 		return fichier.ecritObjet(self.donnees)
-
+	
+	def afficheFormulaire(self, o, master):
+		"""affiche le formulaire sur l'objet o"""
+		if (o["num"] == 0):
+			f = formulaire(o, "Ajouter un " + self.objetNom, master)
+		else:
+			f = formulaire(o, "Modifier un " + self.objetNom, master)
+		self.subform(o, f)
+		
+		
+class formulaire(tkinter.Toplevel):
+	"""gestion d'un formulaire en tkinter"""
+	
+	def __init__(self, objet, titre, master=None):
+		self.objet = objet
+		tkinter.Toplevel.__init__(self, master)
+		fontLegende = tkinter.font.Font(weight="bold")
+		Label(self, text = titre, font=fontLegende).grid(row=0, column=0, columnspan=2, padx=2, pady=2)
+		Label(self, text="Num").grid(row=1, column=0,  sticky=W, padx=2, pady=2)
+		Label(self, text=objet["num"]).grid(row=1, column=1,  sticky=W, padx=2, pady=2)
+		self.compteur = 2
+	
+	def ajouteRubrique(self, rubrique):
+		Label(self, text = rubrique).grid(row=self.compteur, column=0, columnspan=2, padx=2, pady=2)
+		self.compteur += 1
+		
+	def input(self, nom, champ):
+		Label(self, text=nom).grid(row=self.compteur, column=0,  sticky=W, padx=2, pady=2)
+		texte = tkinter.StringVar()
+		if not(champ in self.objet):
+			self.objet[champ] = ""
+		texte.set(self.objet[champ])
+		Entry(self, textvariable=texte).grid(row=self.compteur, column=1,  sticky=W, padx=2, pady=2)
+		self.compteur += 1
+		return texte
+		
 		
 if __name__ == '__main__':
-	#à écrire
+	"""à écrire"""
