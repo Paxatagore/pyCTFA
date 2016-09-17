@@ -1,7 +1,7 @@
 #""" main.py """
 from connexion import *
 from tkinter import *
-import tkinter.font
+from tkinter.ttk import *
 
 class MainApp(Tk):
 	
@@ -160,15 +160,13 @@ class CTFAObjet():
 		for t in self.donnees[de:a]:
 			self.afficheUn(t, tke, compteur)
 			compteur += 1
-		
 		self.boutonsGaucheDroite(tke,de, a)
 		
 	def Legende(self, tke):
 		"""affiche la légende (fonction destinée à être surchargée si besoin """
 		compteur = 0
-		fontLegende = tkinter.font.Font(weight="bold")
 		for t in self.legende:
-			Label(tke, text = t, font=fontLegende).grid(row=0, column=compteur, sticky=W, padx=2, pady=2)
+			Label(tke, text = t, font=('Times', 12, 'bold')).grid(row=0, column=compteur, sticky=W, padx=2, pady=2)
 			compteur += 1
 			
 	def __handlerAfficheElement__(self, o):
@@ -233,15 +231,14 @@ class CTFAObjet():
 		print("Récupération du formulaire")
 		self.subform2()
 		
-class formulaire(tkinter.Toplevel):
+class formulaire(Toplevel):
 	"""gestion d'un formulaire en tkinter"""
 	
 	def __init__(self, o, titre, objet, master=None):
 		self.o = o
 		self.objet = objet
-		tkinter.Toplevel.__init__(self, master)
-		fontLegende = tkinter.font.Font(weight="bold")
-		Label(self, text = titre, font=fontLegende).grid(row=0, column=0, columnspan=2, padx=2, pady=2)
+		Toplevel.__init__(self, master)
+		Label(self, text = titre, font=('Times', 14, 'bold')).grid(row=0, column=0, columnspan=2, padx=2, pady=2)
 		Label(self, text="Num").grid(row=1, column=0,  sticky=W, padx=2, pady=2)
 		Label(self, text=o["num"]).grid(row=1, column=1,  sticky=W, padx=2, pady=2)
 		self.compteur = 2
@@ -252,13 +249,30 @@ class formulaire(tkinter.Toplevel):
 		
 	def input(self, nom, champ):
 		Label(self, text=nom).grid(row=self.compteur, column=0,  sticky=W, padx=2, pady=2)
-		texte = tkinter.StringVar()
+		texte = StringVar()
 		if not(champ in self.o):
 			self.o[champ] = ""
 		texte.set(self.o[champ])
 		Entry(self, textvariable=texte).grid(row=self.compteur, column=1,  sticky=W, padx=2, pady=2)
 		self.compteur += 1
 		return texte
+		
+	def inputElements(self, nom, champ, objet):
+		"""affiche un input complexe avec les éléments déjà intégrés et ceux qui peuvent être ajoutés depuis objet"""
+		Label(self, text=nom).grid(row=self.compteur, column=0,  sticky='nw', padx=2, pady=2)
+		subf = Frame(self)
+		subc = 0
+		if champ in self.o:
+			self.o[champ].sort()
+			for c in self.o[champ]:
+				Label(subf, text=c).grid(row=subc, column=0,  sticky=W)
+				subc += 1
+		nvelements = StringVar()
+		nvelements.set('')
+		Entry(subf, textvariable=nvelements).grid(row=subc, column=0,  sticky=W, padx=2, pady=2)
+		subf.grid(row=self.compteur, column=1,  sticky=W, padx=2, pady=2)
+		self.compteur += 1
+		return nvelements
 	
 	def bouton(self):
 		Button(self, text="Envoyer", command=self.objet.envoyerFormulaire).grid(row=self.compteur, column=0,  sticky=E, padx=2, pady=2)
@@ -268,7 +282,7 @@ class formulaire(tkinter.Toplevel):
 		
 	def listbox(self, nom, liste):
 		Label(self, text=nom).grid(row=self.compteur, column=0,  sticky=W, padx=2, pady=2)
-		listvariable = tkinter.StringVar()
+		listvariable = StringVar()
 		listvariable.set(" ".join(liste))
 		Listbox(self, height=1, listvariable=listvariable).grid(row=self.compteur, column=1,  sticky=W, padx=2, pady=2)
 		self.compteur += 1
@@ -357,8 +371,9 @@ class Tags(CTFAObjet):
 		t["adjectifs"] = tagSplit(t["adjectifs"])
 		#prépare deux tableaux vide pour recevoir les liensTT (pères / fils)
 		t["listefils"] = []
+		t["listefilsnoms"] = []
 		t["listeperes"] = []
-		
+		t["listeperessnoms"] = []
 					
 	def affiche(self, t):
 		
@@ -385,10 +400,10 @@ class Tags(CTFAObjet):
 		
 	def afficheUn(self, t, w, l):
 		"""affiche un tag"""
-		Label(w, text=t["drapeau"]).grid(row=l, column=0,  sticky=W, padx=2, pady=2)
+		Label(w, text=t["drapeau"],width=30).grid(row=l, column=0,  sticky=W, padx=2, pady=2)
 		def handler(evt, self=self, o=t):
 			return self.__handlerAfficheElement__(o)
-		lab = Label(w, text=t["nom"])
+		lab = Label(w, text=t["nom"],width=30)
 		lab.bind("<Button-1>", handler)
 		lab.grid(row=l, column=1,  sticky=W, padx=2, pady=2)
 		Label(w, text=t["natureString"]).grid(row=l, column=2,  sticky=W, padx=2, pady=2)
@@ -471,7 +486,19 @@ class Tags(CTFAObjet):
 		self.furl = self.f.input("URL", "url")
 		self.fdrapeau = self.f.input("Drapeau", "drapeau")
 		self.fnature = self.f.listbox("nature", self.natures)
-	# f.ligne("Nature", f.selectTableauSimple("nature", CTFA.typeTags)) ;
+		# f.ligne("Nature", f.selectTableauSimple("nature", CTFA.typeTags)) ;
+		self.f.ajouteRubrique("Précisions") ;
+		#couleur
+		self.fan = self.f.input("Autre nom", "autrenom") ;
+		self.mc = self.f.input("Mots clés", "motscles")
+		self.adjectif = self.f.input("Adjectifs", "adjectifs")
+		self.det = self.f.input("Déterminant", "designation")
+		self.lat = self.f.input("Latitude", "latitude")
+		self.lon = self.f.input("Longitude", "longitude")
+		#liens pères-fils
+		self.f.ajouteRubrique("Liens pères / fils") ;
+		self.peres = self.f.inputElements("Pères", "listeperessnoms", app.lesTags)
+		self.fils = self.f.inputElements("Fils", "listefilsnoms", app.lesTags)
 	
 	def subform2(self):
 		"""traitement du formulaire"""
@@ -488,16 +515,16 @@ class liensTT(CTFAObjet):
 	def __init__(self, h, mode, tags):
 		self.tags = tags
 		CTFAObjet.__init__(self, h, mode)
-		
 	
 	def corrigeUne(self, lien):
 		"""ajoute le lien dans les fils/père des tags"""
 		tp = self.tags.getById(lien["tag1"])
-		if tp:
-			tp["listefils"].append(lien["tag2"])
 		tf = self.tags.getById(lien["tag2"])
-		if tf:
+		if tp and tf:
+			tp["listefils"].append(lien["tag2"])
+			tp["listefilsnoms"].append(tf["nom"])
 			tf["listeperes"].append(lien["tag1"])
+			tf["listeperessnoms"].append(tp["nom"])
 		
 class Fonctions(CTFAObjet):
 	"""la gestion des fonctions"""
