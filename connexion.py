@@ -14,8 +14,13 @@ class GestionnaireHTTP():
 		"""Créer un password manager"""
 		password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
 		top_level_url = "www.steppe.fr"
-		login = input("Login : ")
-		pwd = getpass("Password : ")
+		f = open("pwd.pwd", 'rb')
+		login = pickle.load(f)
+		pwd = pickle.load(f)
+		f.close()
+		#login = input("Login : ")
+		#pwd = getpass("Password : ")
+		print("Utilisation du login ", login)
 		password_mgr.add_password(None, top_level_url, login, pwd)
 		handler = urllib.request.HTTPBasicAuthHandler(password_mgr)
 		return urllib.request.build_opener(handler)
@@ -148,4 +153,5 @@ class fichierData():
 		self.fichier.close()
 		
 if __name__ == '__main__':
-	"""à écrire"""
+	h = GestionnaireHTTP()
+	h.manager()

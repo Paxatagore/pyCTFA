@@ -13,8 +13,7 @@ class MainApp(Tk):
 		self.lesFonctions = Fonctions(f, 'f', self.lesTags)
 		self.lesLiensTT = liensTT(f, 'f', self.lesTags)
 		self.lesDynasties = Dynasties(f)
-	
-		
+			
 		#partie fenêtres
 		Tk.__init__(self, parent)
 		self.parent = parent
